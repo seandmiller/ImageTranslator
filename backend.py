@@ -2,6 +2,7 @@ import cv2 as cv
 import pytesseract as loki
 from googletrans import Translator, LANGUAGES
 from tkinter import *
+import requests
 
 
 #cv.imshow('read',img)
@@ -19,11 +20,25 @@ def lang(destini):
         if destini=='chinese':
             destini='chinese (simplified)'
         if destini==y:
-          print(x)
+          
           return x
           
 
 def _translator(img, destin):
+
+  
+    
+    if len(img) < 30:
+      
+      img=f'images/{img}'
+      
+    else: 
+      response=requests.get(f'{img}')
+      data=open('images/image_download.png','wb')
+      data.write(response.content)
+      data.close()
+      img='images/image_download.png'
+    
     image = cv.imread(img)
     text = loki.image_to_string(image)
     print(text)
